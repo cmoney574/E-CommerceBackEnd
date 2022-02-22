@@ -3,26 +3,51 @@ const { Tag, Product, ProductTag } = require('../../models');
 
 // The `/api/tags` endpoint
 
-router.get('/', (req, res) => {
+router.get('/', async (req, res) => {
   // find all tags
   // be sure to include its associated Product data
+  const tag = await Tag.findAll({
+      include: [ {model: Product} ],
+    })
+    res.status(200).json(tag);
 });
 
-router.get('/:id', (req, res) => {
+router.get('/:id', async (req, res) => {
   // find a single tag by its `id`
   // be sure to include its associated Product data
+  const tag = await Tag.findAll({
+    include: [ {model: Product} ],
+    where: {
+      id:req.params.id
+    }
+  })
+  res.status(200).json(tag);
 });
 
-router.post('/', (req, res) => {
+router.post('/', async (req, res) => {
   // create a new tag
+  const tag = await Tag.create(req.body);
+    res.status(200).json(locationData);
 });
 
-router.put('/:id', (req, res) => {
+router.put('/:id', async (req, res) => {
   // update a tag's name by its `id` value
+  const locationData = await Location.update({
+    where: {
+      id: req.params.id
+    }
+  });
+  res.status(200).json(locationData);
 });
 
-router.delete('/:id', (req, res) => {
+router.delete('/:id', async (req, res) => {
   // delete on tag by its `id` value
+  const locationData = await Location.destroy({
+    where: {
+      id: req.params.id
+    }
+  });
+  res.status(200).json(locationData);
 });
 
 module.exports = router;
